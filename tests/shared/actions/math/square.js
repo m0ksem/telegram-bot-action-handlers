@@ -1,0 +1,1 @@
+module.exports = (ctx, cbData) => cbData * cbData; 

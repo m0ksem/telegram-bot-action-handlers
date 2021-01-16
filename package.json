@@ -1,0 +1,15 @@
+{
+  "name": "telegram-bot-action-handlers",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "author": "Nedoshev Maksym (m0ksem)",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "jest": "24"
+  },
+  "scripts": {
+    "dev": "node ./src/index.js",
+    "test": "jest"
+  }
+}
