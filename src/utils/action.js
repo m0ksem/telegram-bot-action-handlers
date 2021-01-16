@@ -5,6 +5,14 @@
 
 const SEPARATOR = '|'
 
+class TooBigCallbackDataGenerated extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
 /**
  * @param {String} actionName
  * @param {String} actionData
@@ -14,13 +22,19 @@ const SEPARATOR = '|'
  * @see parse
  * 
  * @example actionName = 'menu/settings', actionData = 'save' => 'menu/settings|save'
+ * @throws {TooBigCallbackDataGenerated} if generated callback data length > 64 bytes.
+ * 
+ * https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
 function stringify(actionName, actionData) {
-  if (typeof actionData === 'string') {
-    return [actionName, actionData].join(SEPARATOR);
+  const str = [actionName, actionData].join(SEPARATOR);
+  const strByteSize = Buffer.byteLength(str, 'utf8')
+
+  if (strByteSize > 64) {
+    throw new TooBigCallbackDataGenerated(`"${str}" is ${strByteSize} bytes (must be < 64bytes).`);
   }
 
-  throw new Error('actionData can be string only')
+  return str;
 }
 
 /**
